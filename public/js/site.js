@@ -32,6 +32,35 @@
     });
   }
 
+  document.querySelectorAll("[data-lang-switch]").forEach(function (link) {
+    const url = new URL(link.getAttribute("href"), location.origin);
+    if (location.hash) url.hash = location.hash;
+    link.href = url.pathname + url.search + url.hash;
+    link.addEventListener("click", function () {
+      const lang = link.getAttribute("data-lang");
+      if (lang !== "bg" && lang !== "en") return;
+      const secure = location.protocol === "https:" ? "; Secure" : "";
+      document.cookie =
+        "finishart-lang=" + lang + "; Max-Age=15552000; Path=/; SameSite=Lax" + secure;
+    });
+  });
+
+  const cookieDialog = document.querySelector("[data-cookie-dialog]");
+  const cookieOpen = document.querySelector("[data-cookie-open]");
+  const cookieNote = document.querySelector("[data-cookie-note]");
+  if (cookieOpen && cookieDialog) {
+    cookieOpen.addEventListener("click", function () {
+      cookieDialog.showModal();
+    });
+  }
+  if (cookieDialog && new URLSearchParams(location.search).get("lang-cleared") === "1") {
+    if (cookieNote) cookieNote.hidden = false;
+    cookieDialog.showModal();
+    const clean = new URL(location.href);
+    clean.searchParams.delete("lang-cleared");
+    history.replaceState(null, "", clean.pathname + clean.search + clean.hash);
+  }
+
   const slides = Array.from(document.querySelectorAll("[data-slide]"));
   const dots = Array.from(document.querySelectorAll("[data-dot]"));
   let index = 0;
@@ -67,40 +96,44 @@
       const email = String(data.get("email") || "").trim();
       const message = String(data.get("message") || "").trim();
       const website = String(data.get("website") || "");
+      const lang = document.documentElement.lang === "en" ? "en" : "bg";
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        status.textContent = "Въведете валиден имейл.";
+        status.textContent = form.getAttribute("data-err-email");
         status.className = "form-status is-error";
         return;
       }
       if (message.length < 2) {
-        status.textContent = "Напишете запитването си.";
+        status.textContent = form.getAttribute("data-err-message");
         status.className = "form-status is-error";
         return;
       }
       const submit = form.querySelector("[type=submit]");
       submit.disabled = true;
       status.className = "form-status";
-      status.textContent = "Изпращане…";
+      status.textContent = form.getAttribute("data-sending");
       try {
         const response = await fetch("/api/contact", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: email, message: message, website: website }),
+          body: JSON.stringify({
+            email: email,
+            message: message,
+            website: website,
+            lang: lang,
+          }),
         });
         const payload = await response.json().catch(function () {
           return {};
         });
         if (!response.ok || !payload.ok) {
-          throw new Error(payload.error || "Запитването не беше изпратено.");
+          throw new Error(payload.error || form.getAttribute("data-fail"));
         }
         form.reset();
         status.className = "form-status";
-        status.textContent = "Запитването е изпратено. Ще се свържем с вас.";
+        status.textContent = form.getAttribute("data-ok");
       } catch (error) {
         status.className = "form-status is-error";
-        status.textContent =
-          error.message ||
-          "В момента формата не може да се изпрати. Обадете се на 0882 820025.";
+        status.textContent = error.message || form.getAttribute("data-fail");
       } finally {
         submit.disabled = false;
       }

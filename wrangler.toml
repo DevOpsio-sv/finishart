@@ -2,6 +2,9 @@ name = "finishart"
 main = "src/worker.js"
 compatibility_date = "2026-10-01"
 
+# Apex host redirect and old Wix paths are handled in src/worker.js.
+# This file does not attach a production route and must not be used to change DNS.
+
 [assets]
 directory = "./public"
 binding = "ASSETS"
@@ -10,4 +13,4 @@ not_found_handling = "404-page"
 run_worker_first = true
 
 [vars]
-CONTACT_TO = "alex.finishart@gmail.com"
+CONTACT_TO = "alx.voynov@yahoo.com"

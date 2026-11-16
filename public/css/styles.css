@@ -46,7 +46,7 @@ a { color: inherit; }
 .skip {
   position: absolute;
   left: 12px;
-  top: -40px;
+  top: -120px;
   background: var(--cream);
   color: var(--terra);
   padding: 8px 12px;
@@ -71,10 +71,20 @@ a { color: inherit; }
   background: var(--terra);
 }
 
+.site-header .logo {
+  position: absolute;
+  left: 79px;
+  top: 47px;
+}
+
 .logo img {
   display: block;
   height: 46px;
   width: auto;
+}
+
+.site-header .logo img {
+  height: 32px;
 }
 
 .menu-btn,
@@ -85,7 +95,16 @@ a { color: inherit; }
   font-family: Forum, "Times New Roman", serif;
 }
 
+.header-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 10px;
+}
+
 .menu-btn {
+  margin-left: 0;
   background: var(--cream);
   color: var(--terra);
   border: 0;
@@ -178,10 +197,16 @@ textarea:focus-visible {
 .nav-close:focus-visible { outline-color: var(--terra); }
 
 .hero {
+  position: relative;
   min-height: 100vh;
+  min-height: 100dvh;
   display: grid;
   grid-template-columns: minmax(340px, 46%) 1fr;
   background: var(--terra);
+}
+
+.hero > .anchor {
+  position: absolute;
 }
 
 .hero-copy {
@@ -218,16 +243,20 @@ textarea:focus-visible {
 }
 
 .hero-media {
-  min-height: 520px;
+  position: relative;
+  min-height: 100%;
+  overflow: hidden;
   background: #d9d0c4 center/cover no-repeat;
 }
 
 .hero-media img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   display: block;
-  min-height: 100%;
 }
 
 .why-title {
@@ -242,7 +271,7 @@ textarea:focus-visible {
 }
 
 .why {
-  background: #cfc0a4 url("../assets/texture.jpg") center/cover;
+  background: #cfc0a4 url("../assets/beige-plaster-texture.jpg") center/cover;
   padding: 54px 24px 78px;
 }
 
@@ -380,8 +409,10 @@ textarea:focus-visible {
 
 .service-card img {
   width: 100%;
-  aspect-ratio: 276 / 340;
+  height: auto;
+  aspect-ratio: 276 / 325;
   object-fit: cover;
+  object-position: center center;
   display: block;
 }
 
@@ -553,6 +584,122 @@ textarea { min-height: 90px; resize: vertical; }
 
 .footer-meta a { text-decoration: none; }
 .footer-meta a:hover { text-decoration: underline; }
+
+.legal-id {
+  margin: 14px 0 0;
+  font-size: 16px;
+}
+
+.footer-link,
+.phone-link,
+.lang-switch {
+  font-family: Forum, "Times New Roman", serif;
+}
+
+.phone-link,
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--cream);
+  color: var(--terra);
+  text-decoration: none;
+  border-radius: 999px;
+}
+
+.phone-link {
+  position: relative;
+  padding: 8px 14px;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.phone-link svg { display: block; }
+
+.phone-link:hover,
+.lang-switch:hover { background: #fff8f4; }
+
+.lang-switch {
+  padding: 8px 12px;
+  font-size: 16px;
+  letter-spacing: 0.06em;
+}
+
+.lang-switch a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.lang-switch a[aria-current="true"] {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.footer-link {
+  background: none;
+  border: 0;
+  padding: 0;
+  color: inherit;
+  font-size: inherit;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.footer-link:hover { text-decoration: underline; }
+
+.form-privacy {
+  margin: 12px 0 0;
+  font-size: 16px;
+}
+
+.form-privacy a { text-decoration: underline; }
+
+.nav-lang {
+  display: flex;
+  gap: 8px;
+  margin: 8px 0 18px;
+  font-size: 18px;
+  letter-spacing: 0.06em;
+}
+
+.nav-lang a { text-decoration: none; }
+.nav-lang a[aria-current="true"] { text-decoration: underline; text-underline-offset: 3px; }
+
+dialog.cookie-settings {
+  border: 0;
+  background: #fff;
+  color: var(--ink);
+  width: min(520px, calc(100vw - 32px));
+  padding: 22px 22px 18px;
+}
+
+dialog.cookie-settings::backdrop { background: rgba(20, 8, 6, 0.72); }
+
+dialog.cookie-settings h2 {
+  margin: 0 0 8px;
+  color: var(--terra);
+  font-size: 28px;
+  font-weight: 400;
+}
+
+dialog.cookie-settings p,
+dialog.cookie-settings li { font-size: 18px; }
+
+dialog.cookie-settings .cookie-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+dialog.cookie-settings .btn { font-size: 18px; }
+
+.anchor {
+  position: relative;
+  display: block;
+  height: 0;
+  overflow: hidden;
+}
 
 .fb {
   display: inline-flex;
@@ -784,8 +931,23 @@ dialog.lightbox button {
   .service-panel { grid-template-columns: 1fr; }
   .gallery { grid-template-columns: 1fr; }
   .hero h1 { font-size: 46px; }
-  .site-header { padding: 12px 16px; }
+  .site-header { padding: 12px 16px; min-height: 72px; }
+  .site-header .logo { left: 16px; top: 20px; }
   .logo img { height: 38px; }
+  .phone-link { padding: 8px 10px; }
+  .phone-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+  .header-actions { gap: 6px; }
+  .menu-btn { padding: 8px 14px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
