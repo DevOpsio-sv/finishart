@@ -142,6 +142,7 @@ UI = {
         "credit": "Сайт от",
         "areas_label": "Райони на обслужване",
         "areas_places": "София · Ловеч · Плевен",
+        "footer_slogan": "Ремонти и реставрация с внимание към детайла.",
         "close": "Затвори",
         "cookie_title": "Настройки за бисквитки",
         "cookie_lead": "ФинишАрт използва бисквитка за запазване на избрания език.",
@@ -194,6 +195,7 @@ UI = {
         "credit": "Website by",
         "areas_label": "Service Areas",
         "areas_places": "Sofia · Lovech · Pleven",
+        "footer_slogan": "Renovation and restoration with attention to detail.",
         "close": "Close",
         "cookie_title": "Cookie settings",
         "cookie_lead": "FinishArt uses a cookie to remember the language you choose.",
@@ -264,12 +266,19 @@ def menu(lang, key):
 
 def footer(lang):
     c = UI[lang]
+    phone_icon = """<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M8.4 4.2h1.8c.4 0 .7.2.8.6l.7 2.2c.1.4 0 .8-.3 1l-1 .6a8.2 8.2 0 0 0 3.4 3.4l.6-1c.2-.4.6-.5 1-.3l2.2.7c.4.1.6.4.6.8v1.8c0 .6-.4 1.1-1 1.2-1 .2-2.6.1-5-2.4s-2.6-4-2.4-5c.1-.6.6-1 1.2-1h.4z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>"""
+    mail_icon = """<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><rect x="3.5" y="5.5" width="17" height="13" rx="1.2" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="m4.2 7.2 7.8 5.6 7.8-5.6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>"""
+    pin_icon = """<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 20.5s-5.2-4.6-5.2-8.7a5.2 5.2 0 1 1 10.4 0c0 4.1-5.2 8.7-5.2 8.7z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><circle cx="12" cy="11.6" r="1.6" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>"""
+    area_icon = """<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 20.5s-5.2-4.6-5.2-8.7a5.2 5.2 0 1 1 10.4 0c0 4.1-5.2 8.7-5.2 8.7z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M9.4 12.2 12 10.2l2.6 2v2.2H9.4z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>"""
     return f"""
-<footer class="site-footer">
-  <div class="footer-main">
-    <a class="logo" href="{url_for(lang, "home")}" aria-label="{esc(c["logo"])}">
-      <img src="{LOGO}" alt="" width="160" height="44">
-    </a>
+<footer class="site-footer" id="contact">
+  <div class="footer-wrap">
+    <div class="footer-brand">
+      <a class="logo" href="{url_for(lang, "home")}" aria-label="{esc(c["logo"])}">
+        <img src="{LOGO}" alt="" width="160" height="44">
+      </a>
+      <p class="footer-slogan">{esc(c["footer_slogan"])}</p>
+    </div>
     <div class="footer-grid">
       <div class="footer-form">
         <h2>{esc(c["enquiry"])}</h2>
@@ -290,49 +299,56 @@ def footer(lang):
           <p class="form-status" data-status role="status"></p>
         </form>
       </div>
+      <div class="footer-split" aria-hidden="true"></div>
       <div class="contact-details">
         <h2>{esc(c["contact"])}</h2>
-        <dl>
+        <dl class="contact-list">
           <div>
+            <span class="contact-icon" aria-hidden="true">{phone_icon}</span>
             <dt>{esc(c["phone"])}</dt>
             <dd><a href="tel:{PHONE}">{PHONE_TEXT}</a></dd>
           </div>
           <div>
+            <span class="contact-icon" aria-hidden="true">{mail_icon}</span>
             <dt>{esc(c["email"])}</dt>
             <dd><a href="mailto:{EMAIL}">{EMAIL}</a></dd>
           </div>
           <div>
+            <span class="contact-icon" aria-hidden="true">{pin_icon}</span>
             <dt>{esc(c["address_label"])}</dt>
             <dd>{esc(c["address"])}</dd>
           </div>
           <div>
+            <span class="contact-icon" aria-hidden="true">{area_icon}</span>
             <dt>{esc(c["areas_label"])}</dt>
             <dd>{esc(c["areas_places"])}</dd>
           </div>
         </dl>
       </div>
     </div>
-  </div>
-  <div class="footer-meta">
-    <nav aria-label="{esc(c["footer_nav"])}">
-      <a href="{url_for(lang, "privacy")}">{esc(c["privacy"])}</a>
-      <a href="{url_for(lang, "cookies")}">{esc(c["cookies"])}</a>
-      <a href="{url_for(lang, "terms")}">{esc(c["terms"])}</a>
-      <a href="{url_for(lang, "legal")}">{esc(c["legal"])}</a>
-      <a href="{url_for(lang, "access")}">{esc(c["access"])}</a>
-    </nav>
-    <div class="footer-actions">
-      <button class="footer-link" type="button" data-cookie-open>{esc(c["cookie_settings"])}</button>
-      <a class="fb" href="https://www.facebook.com/profile.php?id=61577536868457" aria-label="Facebook">
-        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M14.5 8.5V6.8c0-.7.5-1 1.2-1H17V3h-2.2C12.4 3 11 4.5 11 6.9v1.6H9v2.7h2V21h3v-9.8h2.4l.6-2.7h-3z"/></svg>
-      </a>
+    <div class="footer-meta">
+      <nav aria-label="{esc(c["footer_nav"])}">
+        <a href="{url_for(lang, "privacy")}">{esc(c["privacy"])}</a>
+        <a href="{url_for(lang, "cookies")}">{esc(c["cookies"])}</a>
+        <a href="{url_for(lang, "terms")}">{esc(c["terms"])}</a>
+        <a href="{url_for(lang, "legal")}">{esc(c["legal"])}</a>
+        <a href="{url_for(lang, "access")}">{esc(c["access"])}</a>
+      </nav>
+      <div class="footer-actions">
+        <button class="footer-link" type="button" data-cookie-open>{esc(c["cookie_settings"])}</button>
+        <a class="fb" href="https://www.facebook.com/profile.php?id=61577536868457" aria-label="Facebook">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M14.5 8.5V6.8c0-.7.5-1 1.2-1H17V3h-2.2C12.4 3 11 4.5 11 6.9v1.6H9v2.7h2V21h3v-9.8h2.4l.6-2.7h-3z"/></svg>
+        </a>
+      </div>
     </div>
+    <p class="copy">
+      <span>{esc(c["copyright"])}</span>
+      <span class="copy-dot" aria-hidden="true">·</span>
+      <span>{esc(c["company"])}</span>
+      <span class="copy-dot" aria-hidden="true">·</span>
+      <span>{esc(c["credit"])} <a href="https://devopsio.co" target="_blank" rel="noopener">DevOpsio</a></span>
+    </p>
   </div>
-  <p class="copy">
-    <span>{esc(c["copyright"])}</span>
-    <span>{esc(c["company"])}</span>
-    <span>{esc(c["credit"])} <a href="https://devopsio.co" target="_blank" rel="noopener">DevOpsio</a></span>
-  </p>
 </footer>
 <dialog class="cookie-settings" data-cookie-dialog>
   <h2>{esc(c["cookie_title"])}</h2>
@@ -396,7 +412,7 @@ def layout(lang, key, title, description, body, home=False, verify=False, noinde
   <meta name="twitter:image" content="{SITE}{OG}">
   <meta name="theme-color" content="#823c2e">
   <link rel="icon" href="{LOGO}" type="image/png">{verify_meta}
-  <link rel="stylesheet" href="/css/styles.css?v=20261116i">
+  <link rel="stylesheet" href="/css/styles.css?v=20261116m">
 </head>
 <body class="{klass}">
   <a class="skip" href="#main">{esc(c["skip"])}</a>
@@ -452,7 +468,7 @@ def home(lang):
         areas_kicker = "РАЙОНИ НА ОБСЛУЖВАНЕ"
         areas_title = "Работим близо до Вас"
         areas_lead = "Предлагаме професионални ремонтни и довършителни дейности в София, Ловеч, Плевен и околните населени места."
-        area_names = ["София", "Ловеч", "Плевен"]
+        areas_places = ["София", "Ловеч", "Плевен"]
         areas_note = "Обслужваме и населени места в съответните области по предварителна уговорка."
         why = "Защо ние?"
         cards = [
@@ -516,7 +532,7 @@ def home(lang):
         areas_kicker = "SERVICE AREAS"
         areas_title = "Working Near You"
         areas_lead = "We provide professional renovation and finishing services in Sofia, Lovech, Pleven, and surrounding communities."
-        area_names = ["Sofia", "Lovech", "Pleven"]
+        areas_places = ["Sofia", "Lovech", "Pleven"]
         areas_note = "We also serve surrounding towns and villages by prior arrangement."
         why = "Why us?"
         cards = [
@@ -603,8 +619,8 @@ def home(lang):
         for i, label in enumerate(dots)
     )
     area_html = "\n".join(
-        f"""        <li>{PIN_ICON}<span>{esc(name)}</span></li>"""
-        for name in area_names
+        f"        <li>{PIN_ICON}<span>{esc(name)}</span></li>"
+        for name in areas_places
     )
     schema = {
         "@context": "https://schema.org",
