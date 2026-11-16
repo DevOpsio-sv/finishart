@@ -23,7 +23,7 @@
   <meta name="twitter:image" content="https://finishart.bg/assets/finishart-wordmark-social.jpg">
   <meta name="theme-color" content="#823c2e">
   <link rel="icon" href="/assets/finishart-logo.png" type="image/png">
-  <link rel="stylesheet" href="/css/styles.css?v=20261116e">
+  <link rel="stylesheet" href="/css/styles.css?v=20261116i">
 </head>
 <body class="inner">
   <a class="skip" href="#main">Skip to main content</a>
@@ -33,7 +33,7 @@
     <img src="/assets/finishart-logo.png" alt="FinishArt" width="180" height="50">
   </a>
   <div class="header-actions">
-    <a class="phone-link" href="tel:+359882820025" aria-label="Call 0882 820025">
+    <a class="phone-link" href="tel:+359882820025" aria-label="Call +359882820025">
       <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M8.2 3.6h2.1c.4 0 .7.2.8.6l.9 2.6c.1.4 0 .8-.4 1l-1.3.8a9.6 9.6 0 0 0 4.1 4.1l.8-1.3c.2-.4.6-.5 1-.4l2.6.9c.4.1.6.4.6.8v2.1c0 .7-.5 1.3-1.2 1.4-1.2.2-3.4 0-6.4-3S5.4 7.2 5.6 6c.1-.7.7-1.2 1.4-1.2h1.2z"/></svg>
       <span class="phone-label">Phone</span>
     </a>
@@ -56,7 +56,7 @@
     <a href="/en/portfolio/apartments/private-home-plaster-and-paint" hreflang="en" lang="en" data-lang-switch data-lang="en" aria-current="true">EN</a>
     </div>
     <ul>
-      <li><a href="tel:+359882820025">Phone: 0882 820025</a></li>
+      <li><a href="tel:+359882820025" aria-label="Call +359882820025">Call</a></li>
       <li><a href="/en#home">Home</a></li>
       <li><a href="/en#about">About</a></li>
       <li><a href="/en#services">Services</a></li>
@@ -99,38 +99,51 @@
   </main>
   
 <footer class="site-footer">
-  <div class="footer-logo">
+  <div class="footer-main">
     <a class="logo" href="/en" aria-label="FinishArt, home">
       <img src="/assets/finishart-logo.png" alt="" width="160" height="44">
     </a>
-  </div>
-  <div class="footer-grid">
-    <div>
-      <h2>Send an enquiry</h2>
-      <form data-contact novalidate data-err-email="Enter a valid email address." data-err-message="Please write your enquiry." data-sending="Sending…" data-ok="Your enquiry has been sent. We will get back to you." data-fail="The form cannot be sent right now. Call 0882 820025.">
-        <p class="hp" aria-hidden="true">
-          <label>Website <input name="website" tabindex="-1" autocomplete="off"></label>
-        </p>
-        <label class="field">
-          <span>Email *</span>
-          <input name="email" type="email" autocomplete="email" required aria-label="Email">
-        </label>
-        <label class="field">
-          <span>Enquiry *</span>
-          <textarea name="message" required aria-label="Enquiry"></textarea>
-        </label>
-        <button class="btn" type="submit">Send</button>
-        <p class="form-privacy">Your message is used to reply to the enquiry and prepare a quote. <a href="/en/privacy">Privacy Policy</a></p>
-        <p class="form-status" data-status role="status"></p>
-      </form>
-    </div>
-    <div class="contact-block">
-      <p><a href="tel:+359882820025">0882 820025</a></p>
-      <p><a href="mailto:alx.voynov@yahoo.com">alx.voynov@yahoo.com</a></p>
-    </div>
-    <div class="contact-block">
-      <p>Sofia 1504,</p>
-      <p>17 Yanko Sakazov Blvd.</p>
+    <div class="footer-grid">
+      <div class="footer-form">
+        <h2>Send an enquiry</h2>
+        <form data-contact novalidate data-err-email="Enter a valid email address." data-err-message="Please write your enquiry." data-sending="Sending…" data-ok="Your enquiry has been sent. We will get back to you." data-fail="The form cannot be sent right now. Call +359882820025.">
+          <p class="hp" aria-hidden="true">
+            <label>Website <input name="website" tabindex="-1" autocomplete="off"></label>
+          </p>
+          <label class="field">
+            <span>Email *</span>
+            <input name="email" type="email" autocomplete="email" required aria-label="Email">
+          </label>
+          <label class="field">
+            <span>Enquiry *</span>
+            <textarea name="message" required aria-label="Enquiry"></textarea>
+          </label>
+          <button class="btn" type="submit">Send</button>
+          <p class="form-privacy">Your message is used to reply to the enquiry and prepare a quote. <a href="/en/privacy">Privacy Policy</a></p>
+          <p class="form-status" data-status role="status"></p>
+        </form>
+      </div>
+      <div class="contact-details">
+        <h2>Contact</h2>
+        <dl>
+          <div>
+            <dt>Phone</dt>
+            <dd><a href="tel:+359882820025">0882 820025</a></dd>
+          </div>
+          <div>
+            <dt>Email</dt>
+            <dd><a href="mailto:office@finishart.bg">office@finishart.bg</a></dd>
+          </div>
+          <div>
+            <dt>Address</dt>
+            <dd>Sofia, 17 Yanko Sakazov Blvd.</dd>
+          </div>
+          <div>
+            <dt>Service Areas</dt>
+            <dd>Sofia · Lovech · Pleven</dd>
+          </div>
+        </dl>
+      </div>
     </div>
   </div>
   <div class="footer-meta">
@@ -141,13 +154,18 @@
       <a href="/en/legal">Company Information</a>
       <a href="/en/accessibility">Accessibility</a>
     </nav>
-    <button class="footer-link" type="button" data-cookie-open>Cookie settings</button>
-    <a class="fb" href="https://www.facebook.com/profile.php?id=61577536868457" aria-label="Facebook">
-      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M14.5 8.5V6.8c0-.7.5-1 1.2-1H17V3h-2.2C12.4 3 11 4.5 11 6.9v1.6H9v2.7h2V21h3v-9.8h2.4l.6-2.7h-3z"/></svg>
-    </a>
-    <p class="legal-id">FinishArt · Bio Design 2021 Ltd. · Company ID 206494745</p>
+    <div class="footer-actions">
+      <button class="footer-link" type="button" data-cookie-open>Cookie settings</button>
+      <a class="fb" href="https://www.facebook.com/profile.php?id=61577536868457" aria-label="Facebook">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M14.5 8.5V6.8c0-.7.5-1 1.2-1H17V3h-2.2C12.4 3 11 4.5 11 6.9v1.6H9v2.7h2V21h3v-9.8h2.4l.6-2.7h-3z"/></svg>
+      </a>
+    </div>
   </div>
-  <p class="copy">© 2026 by FinishArt</p>
+  <p class="copy">
+    <span>© 2026 FinishArt</span>
+    <span>Bio Design 2021 Ltd., Company ID 206494745</span>
+    <span>Website by <a href="https://devopsio.co" target="_blank" rel="noopener">DevOpsio</a></span>
+  </p>
 </footer>
 <dialog class="cookie-settings" data-cookie-dialog>
   <h2>Cookie settings</h2>
@@ -166,6 +184,6 @@
   <img alt="">
 </dialog>
 
-  <script src="/js/site.js?v=20261116c"></script>
+  <script src="/js/site.js?v=20261116d"></script>
 </body>
 </html>

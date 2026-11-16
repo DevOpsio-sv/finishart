@@ -11,7 +11,7 @@ SITE = "https://finishart.bg"
 PDF = "/_files/ugd/a86e04_1e8507bd40c34be0ba40b41a3c899912.pdf"
 PHONE = "+359882820025"
 PHONE_TEXT = "0882 820025"
-EMAIL = "alx.voynov@yahoo.com"
+EMAIL = "office@finishart.bg"
 KEEP_DIRS = {"assets", "css", "js", "fonts", "files", "_files"}
 
 HERO = "/assets/painted-interior-tall-windows.jpg"
@@ -73,6 +73,8 @@ ICONS = """
 
 PHONE_ICON = """<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M8.2 3.6h2.1c.4 0 .7.2.8.6l.9 2.6c.1.4 0 .8-.4 1l-1.3.8a9.6 9.6 0 0 0 4.1 4.1l.8-1.3c.2-.4.6-.5 1-.4l2.6.9c.4.1.6.4.6.8v2.1c0 .7-.5 1.3-1.2 1.4-1.2.2-3.4 0-6.4-3S5.4 7.2 5.6 6c.1-.7.7-1.2 1.4-1.2h1.2z"/></svg>"""
 
+PIN_ICON = """<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 21s-6-5.4-6-10a6 6 0 1 1 12 0c0 4.6-6 10-6 10z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><circle cx="12" cy="11" r="2.1" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>"""
+
 
 def esc(value):
     return escape(str(value), quote=True)
@@ -111,8 +113,8 @@ UI = {
         "services": "Услуги",
         "portfolio": "Портфолио",
         "phone": "Телефон",
-        "phone_aria": "Обадете се на 0882 820025",
-        "phone_menu": "Телефон: 0882 820025",
+        "phone_aria": "Обадете се на +359882820025",
+        "phone_menu": "Обади се",
         "lang": "Език",
         "logo": "ФинишАрт, начало",
         "footer_nav": "Правни страници",
@@ -130,10 +132,16 @@ UI = {
         "err_message": "Напишете запитването си.",
         "sending": "Изпращане…",
         "ok": "Запитването е изпратено. Ще се свържем с вас.",
-        "fail": "В момента формата не може да се изпрати. Обадете се на 0882 820025.",
+        "fail": "В момента формата не може да се изпрати. Обадете се на +359882820025.",
         "privacy_note": "Съобщението се използва, за да отговорим на запитването и да подготвим оферта.",
-        "address": ("София 1504,", "бул. „Янко Сакъзов“ 17"),
-        "company": "ФинишАрт · Био Дизайн 2021 ЕООД · ЕИК 206494745",
+        "contact": "Контакт",
+        "address_label": "Адрес",
+        "address": "София, бул. „Янко Сакъзов“ 17",
+        "company": "Био Дизайн 2021 ЕООД, ЕИК 206494745",
+        "copyright": "© 2026 ФинишАрт",
+        "credit": "Сайт от",
+        "areas_label": "Райони на обслужване",
+        "areas_places": "София · Ловеч · Плевен",
         "close": "Затвори",
         "cookie_title": "Настройки за бисквитки",
         "cookie_lead": "ФинишАрт използва бисквитка за запазване на избрания език.",
@@ -157,8 +165,8 @@ UI = {
         "services": "Services",
         "portfolio": "Portfolio",
         "phone": "Phone",
-        "phone_aria": "Call 0882 820025",
-        "phone_menu": "Phone: 0882 820025",
+        "phone_aria": "Call +359882820025",
+        "phone_menu": "Call",
         "lang": "Language",
         "logo": "FinishArt, home",
         "footer_nav": "Legal pages",
@@ -176,10 +184,16 @@ UI = {
         "err_message": "Please write your enquiry.",
         "sending": "Sending…",
         "ok": "Your enquiry has been sent. We will get back to you.",
-        "fail": "The form cannot be sent right now. Call 0882 820025.",
+        "fail": "The form cannot be sent right now. Call +359882820025.",
         "privacy_note": "Your message is used to reply to the enquiry and prepare a quote.",
-        "address": ("Sofia 1504,", "17 Yanko Sakazov Blvd."),
-        "company": "FinishArt · Bio Design 2021 Ltd. · Company ID 206494745",
+        "contact": "Contact",
+        "address_label": "Address",
+        "address": "Sofia, 17 Yanko Sakazov Blvd.",
+        "company": "Bio Design 2021 Ltd., Company ID 206494745",
+        "copyright": "© 2026 FinishArt",
+        "credit": "Website by",
+        "areas_label": "Service Areas",
+        "areas_places": "Sofia · Lovech · Pleven",
         "close": "Close",
         "cookie_title": "Cookie settings",
         "cookie_lead": "FinishArt uses a cookie to remember the language you choose.",
@@ -237,7 +251,7 @@ def menu(lang, key):
       {lang_links(lang, key)}
     </div>
     <ul>
-      <li><a href="tel:{PHONE}">{esc(c["phone_menu"])}</a></li>
+      <li><a href="tel:{PHONE}" aria-label="{esc(c["phone_aria"])}">{esc(c["phone_menu"])}</a></li>
       <li><a href="{url_for(lang, "home")}#home">{esc(c["home"])}</a></li>
       <li><a href="{url_for(lang, "home")}#about">{esc(c["about"])}</a></li>
       <li><a href="{url_for(lang, "home")}#services">{esc(c["services"])}</a></li>
@@ -250,41 +264,53 @@ def menu(lang, key):
 
 def footer(lang):
     c = UI[lang]
-    line1, line2 = c["address"]
     return f"""
 <footer class="site-footer">
-  <div class="footer-logo">
+  <div class="footer-main">
     <a class="logo" href="{url_for(lang, "home")}" aria-label="{esc(c["logo"])}">
       <img src="{LOGO}" alt="" width="160" height="44">
     </a>
-  </div>
-  <div class="footer-grid">
-    <div>
-      <h2>{esc(c["enquiry"])}</h2>
-      <form data-contact novalidate data-err-email="{esc(c["err_email"])}" data-err-message="{esc(c["err_message"])}" data-sending="{esc(c["sending"])}" data-ok="{esc(c["ok"])}" data-fail="{esc(c["fail"])}">
-        <p class="hp" aria-hidden="true">
-          <label>Website <input name="website" tabindex="-1" autocomplete="off"></label>
-        </p>
-        <label class="field">
-          <span>{esc(c["email"])} *</span>
-          <input name="email" type="email" autocomplete="email" required aria-label="{esc(c["email"])}">
-        </label>
-        <label class="field">
-          <span>{esc(c["message"])} *</span>
-          <textarea name="message" required aria-label="{esc(c["message"])}"></textarea>
-        </label>
-        <button class="btn" type="submit">{esc(c["send"])}</button>
-        <p class="form-privacy">{esc(c["privacy_note"])} <a href="{url_for(lang, "privacy")}">{esc(c["privacy"])}</a></p>
-        <p class="form-status" data-status role="status"></p>
-      </form>
-    </div>
-    <div class="contact-block">
-      <p><a href="tel:{PHONE}">{PHONE_TEXT}</a></p>
-      <p><a href="mailto:{EMAIL}">{EMAIL}</a></p>
-    </div>
-    <div class="contact-block">
-      <p>{esc(line1)}</p>
-      <p>{esc(line2)}</p>
+    <div class="footer-grid">
+      <div class="footer-form">
+        <h2>{esc(c["enquiry"])}</h2>
+        <form data-contact novalidate data-err-email="{esc(c["err_email"])}" data-err-message="{esc(c["err_message"])}" data-sending="{esc(c["sending"])}" data-ok="{esc(c["ok"])}" data-fail="{esc(c["fail"])}">
+          <p class="hp" aria-hidden="true">
+            <label>Website <input name="website" tabindex="-1" autocomplete="off"></label>
+          </p>
+          <label class="field">
+            <span>{esc(c["email"])} *</span>
+            <input name="email" type="email" autocomplete="email" required aria-label="{esc(c["email"])}">
+          </label>
+          <label class="field">
+            <span>{esc(c["message"])} *</span>
+            <textarea name="message" required aria-label="{esc(c["message"])}"></textarea>
+          </label>
+          <button class="btn" type="submit">{esc(c["send"])}</button>
+          <p class="form-privacy">{esc(c["privacy_note"])} <a href="{url_for(lang, "privacy")}">{esc(c["privacy"])}</a></p>
+          <p class="form-status" data-status role="status"></p>
+        </form>
+      </div>
+      <div class="contact-details">
+        <h2>{esc(c["contact"])}</h2>
+        <dl>
+          <div>
+            <dt>{esc(c["phone"])}</dt>
+            <dd><a href="tel:{PHONE}">{PHONE_TEXT}</a></dd>
+          </div>
+          <div>
+            <dt>{esc(c["email"])}</dt>
+            <dd><a href="mailto:{EMAIL}">{EMAIL}</a></dd>
+          </div>
+          <div>
+            <dt>{esc(c["address_label"])}</dt>
+            <dd>{esc(c["address"])}</dd>
+          </div>
+          <div>
+            <dt>{esc(c["areas_label"])}</dt>
+            <dd>{esc(c["areas_places"])}</dd>
+          </div>
+        </dl>
+      </div>
     </div>
   </div>
   <div class="footer-meta">
@@ -295,13 +321,18 @@ def footer(lang):
       <a href="{url_for(lang, "legal")}">{esc(c["legal"])}</a>
       <a href="{url_for(lang, "access")}">{esc(c["access"])}</a>
     </nav>
-    <button class="footer-link" type="button" data-cookie-open>{esc(c["cookie_settings"])}</button>
-    <a class="fb" href="https://www.facebook.com/profile.php?id=61577536868457" aria-label="Facebook">
-      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M14.5 8.5V6.8c0-.7.5-1 1.2-1H17V3h-2.2C12.4 3 11 4.5 11 6.9v1.6H9v2.7h2V21h3v-9.8h2.4l.6-2.7h-3z"/></svg>
-    </a>
-    <p class="legal-id">{esc(c["company"])}</p>
+    <div class="footer-actions">
+      <button class="footer-link" type="button" data-cookie-open>{esc(c["cookie_settings"])}</button>
+      <a class="fb" href="https://www.facebook.com/profile.php?id=61577536868457" aria-label="Facebook">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M14.5 8.5V6.8c0-.7.5-1 1.2-1H17V3h-2.2C12.4 3 11 4.5 11 6.9v1.6H9v2.7h2V21h3v-9.8h2.4l.6-2.7h-3z"/></svg>
+      </a>
+    </div>
   </div>
-  <p class="copy">© 2026 by FinishArt</p>
+  <p class="copy">
+    <span>{esc(c["copyright"])}</span>
+    <span>{esc(c["company"])}</span>
+    <span>{esc(c["credit"])} <a href="https://devopsio.co" target="_blank" rel="noopener">DevOpsio</a></span>
+  </p>
 </footer>
 <dialog class="cookie-settings" data-cookie-dialog>
   <h2>{esc(c["cookie_title"])}</h2>
@@ -365,7 +396,7 @@ def layout(lang, key, title, description, body, home=False, verify=False, noinde
   <meta name="twitter:image" content="{SITE}{OG}">
   <meta name="theme-color" content="#823c2e">
   <link rel="icon" href="{LOGO}" type="image/png">{verify_meta}
-  <link rel="stylesheet" href="/css/styles.css?v=20261116e">
+  <link rel="stylesheet" href="/css/styles.css?v=20261116i">
 </head>
 <body class="{klass}">
   <a class="skip" href="#main">{esc(c["skip"])}</a>
@@ -375,7 +406,7 @@ def layout(lang, key, title, description, body, home=False, verify=False, noinde
 {body}
   </main>
   {footer(lang)}
-  <script src="/js/site.js?v=20261116c"></script>
+  <script src="/js/site.js?v=20261116d"></script>
 </body>
 </html>
 """
@@ -417,6 +448,12 @@ def home(lang):
         offer = "Вземете безплатна оферта"
         note = "* Цени от 8–22 евро/кв.м според състоянието на стените и вида на услугата."
         hero_alt = "Боядисан интериор с високи сиви рамки на прозорци и светъл дървен под"
+        hero_areas = "София · Ловеч · Плевен и областите"
+        areas_kicker = "РАЙОНИ НА ОБСЛУЖВАНЕ"
+        areas_title = "Работим близо до Вас"
+        areas_lead = "Предлагаме професионални ремонтни и довършителни дейности в София, Ловеч, Плевен и околните населени места."
+        area_names = ["София", "Ловеч", "Плевен"]
+        areas_note = "Обслужваме и населени места в съответните области по предварителна уговорка."
         why = "Защо ние?"
         cards = [
             ("1", "Точност:<br>Планираме алгоритмично, изпълняваме в срок", [
@@ -475,6 +512,12 @@ def home(lang):
         offer = "Request a free quote"
         note = "* Prices from €8–22 per m², depending on the condition of the walls and the type of work."
         hero_alt = "Painted interior with tall grey window frames and a light wood floor"
+        hero_areas = "Sofia · Lovech · Pleven and surrounding regions"
+        areas_kicker = "SERVICE AREAS"
+        areas_title = "Working Near You"
+        areas_lead = "We provide professional renovation and finishing services in Sofia, Lovech, Pleven, and surrounding communities."
+        area_names = ["Sofia", "Lovech", "Pleven"]
+        areas_note = "We also serve surrounding towns and villages by prior arrangement."
         why = "Why us?"
         cards = [
             ("1", "Accuracy:<br>We plan the work in stages and deliver on time", [
@@ -559,6 +602,10 @@ def home(lang):
         f"""        <button type="button" data-dot role="tab" aria-label="{esc(label)}" aria-selected="{'true' if i == 0 else 'false'}"></button>"""
         for i, label in enumerate(dots)
     )
+    area_html = "\n".join(
+        f"""        <li>{PIN_ICON}<span>{esc(name)}</span></li>"""
+        for name in area_names
+    )
     schema = {
         "@context": "https://schema.org",
         "@type": "HomeAndConstructionBusiness",
@@ -585,6 +632,7 @@ def home(lang):
         <h1>{hero_title}</h1>
         <p class="hero-lead">{esc(lead1)}</p>
         <p class="hero-lead">{esc(lead2)}</p>
+        <p class="hero-areas">{PIN_ICON}<span>{esc(hero_areas)}</span></p>
         <a class="btn" href="tel:{PHONE}">{esc(offer)}</a>
         <p class="hero-note">{esc(note)}</p>
       </div>
@@ -626,6 +674,15 @@ def home(lang):
       <div class="service-panel">
 {service_html}
       </div>
+    </section>
+    <section class="areas" id="areas" aria-labelledby="areas-title">
+      <p class="areas-kicker">{esc(areas_kicker)}</p>
+      <h2 id="areas-title">{esc(areas_title)}</h2>
+      <p class="areas-lead">{esc(areas_lead)}</p>
+      <ul class="area-list">
+{area_html}
+      </ul>
+      <p class="areas-note">{esc(areas_note)}</p>
     </section>
     <section class="reviews" aria-labelledby="reviews-title">
       <h2 id="reviews-title">{esc(reviews_title)}</h2>
@@ -989,7 +1046,7 @@ def privacy(lang):
             f"""
       <h1>Политика за поверителност</h1>
       <p>ФинишАрт уважава Вашата поверителност. Администратор на личните данни е „Био Дизайн 2021“ ЕООД, ЕИК 206494745, със седалище и адрес на управление бул. „Янко Сакъзов“ 17, район „Сердика“, София 1504, България.</p>
-      <p>За въпроси и искания: <a href="mailto:{EMAIL}">{EMAIL}</a>, телефон <a href="tel:{PHONE}">+359 882 820025</a>.</p>
+      <p>За въпроси и искания: <a href="mailto:{EMAIL}">{EMAIL}</a>, телефон <a href="tel:{PHONE}">+359882820025</a>.</p>
       <h2>Запитвания</h2>
       <p>Когато изпратите запитване чрез сайта, обработваме предоставените от Вас данни — имейл адрес и текста на съобщението — единствено за комуникация, изготвяне на оферта и последващо обслужване във връзка със запитването. Ако в текста посочите име или телефон, те се обработват като част от същото съобщение.</p>
       <p>Обработването се основава на предприемане на стъпки преди сключване на договор или на законен интерес да отговорим на получено запитване, според характера на запитването (чл. 6, пар. 1, б. „б“ и б. „е“ от Регламент (ЕС) 2016/679). Сайтът не изпраща бюлетини и не използва данните за реклама.</p>
@@ -1020,7 +1077,7 @@ def privacy(lang):
             f"""
       <h1>Privacy Policy</h1>
       <p>FinishArt respects your privacy. The controller of personal data is „Био Дизайн 2021“ ЕООД, company number 206494745, with its registered office at 17 Yanko Sakazov Blvd., Serdika District, Sofia 1504, Bulgaria.</p>
-      <p>For questions and requests: <a href="mailto:{EMAIL}">{EMAIL}</a>, telephone <a href="tel:{PHONE}">+359 882 820025</a>.</p>
+      <p>For questions and requests: <a href="mailto:{EMAIL}">{EMAIL}</a>, telephone <a href="tel:{PHONE}">+359882820025</a>.</p>
       <h2>Enquiries</h2>
       <p>When you send an enquiry through the website, we use the details you provide — your email address and the text of the message — only to correspond with you, prepare a quote and follow up on that enquiry. If you include a name or telephone number in the message, we treat it as part of the same enquiry.</p>
       <p>The processing is based on steps taken before entering into a contract, or on the legitimate interest in replying to an enquiry we have received, depending on what you ask (Article 6(1)(b) and (f) of Regulation (EU) 2016/679). The website does not send newsletters and does not use these details for advertising.</p>
@@ -1116,7 +1173,7 @@ def company(lang):
         <li>Дружество: Био Дизайн 2021 ЕООД</li>
         <li>ЕИК: 206494745</li>
         <li>Седалище и адрес на управление: бул. „Янко Сакъзов“ 17, район „Сердика“, София 1504, България</li>
-        <li>Телефон: <a href="tel:{PHONE}">+359 882 820025</a></li>
+        <li>Телефон: <a href="tel:{PHONE}">+359882820025</a></li>
         <li>Имейл: <a href="mailto:{EMAIL}">{EMAIL}</a></li>
         <li>Уебсайт: <a href="{SITE}">finishart.bg</a></li>
         <li>Регистър: Търговски регистър към Агенцията по вписванията</li>
@@ -1133,7 +1190,7 @@ def company(lang):
         <li>Company: Био Дизайн 2021 ЕООД (“Bio Design 2021” Ltd.)</li>
         <li>Company number (EIK): 206494745</li>
         <li>Registered office: 17 Yanko Sakazov Blvd., Serdika District, Sofia 1504, Bulgaria</li>
-        <li>Telephone: <a href="tel:{PHONE}">+359 882 820025</a></li>
+        <li>Telephone: <a href="tel:{PHONE}">+359882820025</a></li>
         <li>Email: <a href="mailto:{EMAIL}">{EMAIL}</a></li>
         <li>Website: <a href="{SITE}">finishart.bg</a></li>
         <li>Register: Commercial Register at the Registry Agency</li>
@@ -1150,7 +1207,7 @@ def access(lang):
       <h1>Достъпност</h1>
       <p>Стремим се сайтът на ФинишАрт да бъде лесен и удобен за използване от всички посетители.</p>
       <p>Работим за ясна навигация, четлив текст, подходящ цветови контраст и достъпност чрез клавиатура и помощни технологии.</p>
-      <p>Ако срещнете затруднение при използването на сайта или достъпа до информация, свържете се с нас на <a href="mailto:{EMAIL}">{EMAIL}</a> или <a href="tel:{PHONE}">+359 882 820025</a>.</p>
+      <p>Ако срещнете затруднение при използването на сайта или достъпа до информация, свържете се с нас на <a href="mailto:{EMAIL}">{EMAIL}</a> или <a href="tel:{PHONE}">+359882820025</a>.</p>
       <p>Ще съдействаме за предоставяне на необходимата информация в достъпен формат.</p>
 """)
     else:
@@ -1160,7 +1217,7 @@ def access(lang):
       <h1>Accessibility</h1>
       <p>We want the FinishArt website to be straightforward and comfortable for every visitor.</p>
       <p>We work towards clear navigation, readable text, suitable colour contrast, and access by keyboard and assistive technology.</p>
-      <p>If you have difficulty using the website or reaching the information you need, contact us at <a href="mailto:{EMAIL}">{EMAIL}</a> or <a href="tel:{PHONE}">+359 882 820025</a>.</p>
+      <p>If you have difficulty using the website or reaching the information you need, contact us at <a href="mailto:{EMAIL}">{EMAIL}</a> or <a href="tel:{PHONE}">+359882820025</a>.</p>
       <p>We will help provide the information in an accessible form.</p>
 """)
 

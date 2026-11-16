@@ -45,7 +45,7 @@ const COPY = {
     email: "Въведете валиден имейл.",
     message: "Напишете запитване между 2 и 5000 знака.",
     offline:
-      "Формата още не е свързана с поща. Обадете се на 0882 820025 или пишете на alx.voynov@yahoo.com.",
+      "Формата още не е свързана с поща. Обадете се на +359882820025 или пишете на office@finishart.bg.",
     send: "Съобщението не беше доставено. Опитайте отново или се обадете.",
     subject: "Запитване от finishart.bg",
   },
@@ -57,7 +57,7 @@ const COPY = {
     email: "Enter a valid email address.",
     message: "Write an enquiry between 2 and 5000 characters.",
     offline:
-      "The form is not connected to email yet. Call 0882 820025 or write to alx.voynov@yahoo.com.",
+      "The form is not connected to email yet. Call +359882820025 or write to office@finishart.bg.",
     send: "The message was not delivered. Try again or call us.",
     subject: "Enquiry from finishart.bg",
   },
@@ -178,7 +178,7 @@ async function handleContact(request, env) {
     return json({ ok: false, error: text.offline }, 503);
   }
 
-  const to = env.CONTACT_TO || "alx.voynov@yahoo.com";
+  const to = env.CONTACT_TO || "office@finishart.bg";
   const sent = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: {

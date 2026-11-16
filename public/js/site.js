@@ -90,6 +90,17 @@
   const form = document.querySelector("[data-contact]");
   if (form) {
     const status = form.querySelector("[data-status]");
+    const emailInput = form.querySelector("[name=email]");
+    const messageInput = form.querySelector("[name=message]");
+    function markInvalid(field) {
+      [emailInput, messageInput].forEach(function (input) {
+        input.removeAttribute("aria-invalid");
+      });
+      if (field) {
+        field.setAttribute("aria-invalid", "true");
+        field.focus();
+      }
+    }
     form.addEventListener("submit", async function (event) {
       event.preventDefault();
       const data = new FormData(form);
@@ -100,13 +111,16 @@
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
         status.textContent = form.getAttribute("data-err-email");
         status.className = "form-status is-error";
+        markInvalid(emailInput);
         return;
       }
       if (message.length < 2) {
         status.textContent = form.getAttribute("data-err-message");
         status.className = "form-status is-error";
+        markInvalid(messageInput);
         return;
       }
+      markInvalid(null);
       const submit = form.querySelector("[type=submit]");
       submit.disabled = true;
       status.className = "form-status";

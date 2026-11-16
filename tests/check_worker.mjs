@@ -149,7 +149,7 @@ const offline = await hit("https://finishart.bg/api/contact", {
   headers: { "content-type": "application/json" },
   body: JSON.stringify({ email: "a@b.co", message: "Need a quote", lang: "bg" }),
 });
-if (offline.status !== 503 || offline.location || !offline.body.includes("0882 820025")) {
+if (offline.status !== 503 || offline.location || !offline.body.includes("+359882820025")) {
   fail(`contact offline ${offline.status} ${offline.location} ${offline.body}`);
 }
 
