@@ -6,7 +6,7 @@ Date: 16 November 2026. Nothing was committed, pushed, deployed, or changed in D
 
 **CONDITIONAL GO.**
 
-The existing site can be attached to `www.finishart.bg` after the manual items below. It is not a claim of finished legal sign-off, and it is not a GO for a Viber button or for live email until those items are confirmed.
+The existing site can be attached to `https://finishart.bg` after the manual items below. It is not a claim of finished legal sign-off, and it is not a GO for a Viber button or for live email until those items are confirmed.
 
 ## Files changed
 
@@ -15,7 +15,7 @@ The existing site can be attached to `www.finishart.bg` after the manual items b
 - `public/assets/*` — renamed photographs; unused `facebook.png` removed
 - `public/css/styles.css` — header controls, cookie panel, texture path
 - `public/js/site.js` — language cookie, form messages, cookie panel
-- `src/worker.js` — host redirect, old-path redirects, contact languages, cache headers, cookie clear
+- `src/worker.js` — language and old-path redirects, contact languages, cache headers, cookie clear
 - `wrangler.toml` — note only; same Workers static-assets setup
 - `tests/check_images.py`, `tests/check_worker.mjs`
 - `README.md`
@@ -65,7 +65,7 @@ Bulgarian is the default. English is a full translation of the visible site, not
 - Trailing slashes are dropped by the existing Wrangler `html_handling`, so canonicals have no trailing slash. `/bg/` still reaches `/bg`.
 - The header switch is `BG | EN` on desktop and mobile. It keeps the current path and hash. Choosing a language sets `finishart-lang` for 180 days. `/` then 302s to that language. With no cookie, `/` goes to `/bg`.
 - `hreflang` `bg`, `en`, and `x-default` (Bulgarian) are on each pair. Canonicals, titles, descriptions, `lang`, Open Graph locale, and the sitemap alternates match the language.
-- Old Wix paths, including the broken `апарта�менти` path, 301 to the Bulgarian pages. `finishart.bg` 301s to `www.finishart.bg` inside the Worker. DNS was not changed.
+- Old Wix paths, including the broken `апарта�менти` path, 301 to the Bulgarian pages on the same hostname. The Worker does not redirect `finishart.bg` to `www.finishart.bg`. DNS was not changed.
 - Page titles now end in `| ФинишАрт` / `| FinishArt`. The old Wix `| Alex` suffix was not kept.
 - The home description no longer calls the company „Финиш Арт ООД“.
 
@@ -109,7 +109,7 @@ The project stays on Workers with static assets (`wrangler.toml`: `main = src/wo
 - `npx wrangler deploy --dry-run` (Wrangler 4.162.0) read the `public` assets and exited without uploading. Upload size of the Worker script was 9.92 KiB.
 - `CONTACT_TO` remains a var. `RESEND_API_KEY` and `CONTACT_FROM` stay secrets (`.dev.vars.example`).
 - Cache: HTML 5 minutes, CSS/JS 1 day, images, fonts, and `/_files/` 30 days. `/api/contact` is `no-store`.
-- Canonical host in the Worker: `https://www.finishart.bg`. Apex redirect is in the Worker and only applies when that hostname hits this Worker.
+- Canonical host is `https://finishart.bg`. The Worker serves both hostnames and does not rewrite them. `www.finishart.bg` 301s to the apex through a Cloudflare Redirect Rule. That rule loops if the Worker also redirects the apex to www.
 - No production route was added. DNS was not edited.
 
 ## Test results
@@ -118,7 +118,7 @@ Passed:
 
 - `python render_site.py`
 - `python tests/check_images.py` — 30 content images across 32 pages, gallery order, hero priority, texture file
-- `node tests/check_worker.mjs` — `/` to `/bg`, cookie to `/en`, apex host, old portfolio and bathroom URLs, HTML and image cache headers, English and Bulgarian contact errors, 503 when mail is not configured, cookie-clear redirect
+- `node tests/check_worker.mjs` — `/` to `/bg` on the same host, cookie to `/en`, both hostnames without a host swap, old portfolio and bathroom URLs, HTML and image cache headers, English and Bulgarian contact errors, 503 when mail is not configured, cookie-clear redirect, canonical URLs on `https://finishart.bg`
 - `npx wrangler deploy --dry-run` — exit 0, no deploy
 - Browser on `http://127.0.0.1:3010`: Bulgarian home, English home, language metadata, phone `tel:+359882820025`, portfolio project images (Sofia after, then before), language switch URL for that project, English form validation and the offline message, cookie panel, company page, no horizontal overflow at 390px and 1920px
 
@@ -126,7 +126,7 @@ Not verified:
 
 - A real Resend delivery
 - Viber on a phone
-- The apex DNS redirect in Cloudflare’s dashboard (the Worker does it only after the hostname reaches the Worker)
+- The Cloudflare Redirect Rule from `www.finishart.bg` to `https://finishart.bg` (leave it off until this Worker is deployed, then turn it on; the Worker no longer sends the apex back to www)
 - An official Commercial Register extract
 - Withdrawal inside the static preview: `python -m http.server` does not run the Worker. The clear link was verified against the Worker module, not against a live device.
 
@@ -137,7 +137,7 @@ There is no separate lint or Node test suite in this repository.
 1. Confirm the number is on Viber before any Viber button is added.
 2. Put `RESEND_API_KEY` and `CONTACT_FROM` in Worker secrets. Send one real enquiry and confirm it arrives at `alex.finishart@gmail.com`.
 3. Sign or confirm the Resend and Google arrangements, and record how long enquiry mail is kept.
-4. In Cloudflare, attach the Worker only when ready, redirect `finishart.bg` to `www.finishart.bg` if the apex is not on this Worker, and confirm log retention. Do not drop MX, SPF, DKIM, or DMARC.
+4. In Cloudflare, keep both hostnames on this Worker, enable the Redirect Rule from `www.finishart.bg` to `https://finishart.bg`, and confirm log retention. Do not redirect the apex to www. Do not drop MX, SPF, DKIM, or DMARC.
 5. Download an official register extract and settle 1504 vs 1505, VAT status, and that this company is the party to FinishArt contracts.
 6. Confirm rights to host the former Wix photographs and to keep the named client portraits online.
 7. Have someone responsible for the business read the privacy, cookie, and terms pages before they are treated as final.

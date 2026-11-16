@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.finishart.bg/sitemap.xml
+Sitemap: https://finishart.bg/sitemap.xml

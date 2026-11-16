@@ -7,7 +7,7 @@ from pathlib import Path
 from urllib.parse import quote
 
 ROOT = Path(__file__).resolve().parent / "public"
-SITE = "https://www.finishart.bg"
+SITE = "https://finishart.bg"
 PDF = "/_files/ugd/a86e04_1e8507bd40c34be0ba40b41a3c899912.pdf"
 PHONE = "+359882820025"
 PHONE_TEXT = "0882 820025"
@@ -1118,7 +1118,7 @@ def company(lang):
         <li>Седалище и адрес на управление: бул. „Янко Сакъзов“ 17, район „Сердика“, София 1504, България</li>
         <li>Телефон: <a href="tel:{PHONE}">+359 882 820025</a></li>
         <li>Имейл: <a href="mailto:{EMAIL}">{EMAIL}</a></li>
-        <li>Уебсайт: <a href="{SITE}">www.finishart.bg</a></li>
+        <li>Уебсайт: <a href="{SITE}">finishart.bg</a></li>
         <li>Регистър: Търговски регистър към Агенцията по вписванията</li>
         <li>ДДС: дружеството не е регистрирано по Закона за данък върху добавената стойност и няма ДДС номер</li>
       </ul>
@@ -1135,7 +1135,7 @@ def company(lang):
         <li>Registered office: 17 Yanko Sakazov Blvd., Serdika District, Sofia 1504, Bulgaria</li>
         <li>Telephone: <a href="tel:{PHONE}">+359 882 820025</a></li>
         <li>Email: <a href="mailto:{EMAIL}">{EMAIL}</a></li>
-        <li>Website: <a href="{SITE}">www.finishart.bg</a></li>
+        <li>Website: <a href="{SITE}">finishart.bg</a></li>
         <li>Register: Commercial Register at the Registry Agency</li>
         <li>VAT: the company is not registered for VAT and has no VAT number</li>
       </ul>
@@ -1191,7 +1191,7 @@ def missing():
 
 def robots_and_sitemap():
     (ROOT / "robots.txt").write_text(
-        "User-agent: *\nAllow: /\n\nSitemap: https://www.finishart.bg/sitemap.xml\n",
+        f"User-agent: *\nAllow: /\n\nSitemap: {SITE}/sitemap.xml\n",
         encoding="utf-8",
     )
     keys = [
@@ -1252,14 +1252,14 @@ def main():
 def root_fallback():
     write(
         "index.html",
-        """<!DOCTYPE html>
+        f"""<!DOCTYPE html>
 <html lang="bg">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ФинишАрт</title>
   <meta name="robots" content="noindex">
-  <link rel="canonical" href="https://www.finishart.bg/bg">
+  <link rel="canonical" href="{SITE}/bg">
   <meta http-equiv="refresh" content="0; url=/bg">
   <script>location.replace("/bg");</script>
 </head>

@@ -66,8 +66,8 @@ const COPY = {
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
-    const hostChanged = url.hostname === "finishart.bg";
-    if (hostChanged) url.hostname = "www.finishart.bg";
+    // Keep the request hostname. www.finishart.bg → https://finishart.bg is a
+    // Cloudflare Redirect Rule; rewriting the apex to www here loops with it.
 
     if (request.method === "GET" && url.searchParams.has("forget-lang")) {
       url.searchParams.delete("forget-lang");
@@ -82,7 +82,6 @@ export default {
     }
 
     if (url.pathname === "/api/contact") {
-      if (hostChanged) return Response.redirect(url.toString(), 301);
       if (request.method !== "POST") return json({ ok: false, error: COPY.bg.method }, 405);
       return handleContact(request, env);
     }
@@ -111,8 +110,8 @@ export default {
       }
     }
 
-    if (target || hostChanged) {
-      url.pathname = target || path || "/";
+    if (target) {
+      url.pathname = target;
       const status = path === "/" || path === "" ? 302 : 301;
       return Response.redirect(url.toString(), status);
     }

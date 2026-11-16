@@ -2,7 +2,8 @@ name = "finishart"
 main = "src/worker.js"
 compatibility_date = "2026-10-01"
 
-# Apex host redirect and old Wix paths are handled in src/worker.js.
+# Old Wix paths are redirected in src/worker.js. The Worker does not rewrite hostnames.
+# www.finishart.bg → https://finishart.bg belongs in a Cloudflare Redirect Rule.
 # This file does not attach a production route and must not be used to change DNS.
 
 [assets]
