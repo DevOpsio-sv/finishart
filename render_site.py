@@ -75,6 +75,8 @@ PHONE_ICON = """<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="tru
 
 PIN_ICON = """<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 21s-6-5.4-6-10a6 6 0 1 1 12 0c0 4.6-6 10-6 10z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><circle cx="12" cy="11" r="2.1" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>"""
 
+CAL_ICON = """<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><rect x="4" y="5.5" width="16" height="14" rx="1.2" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M4 10h16M8 3.8v3.2M16 3.8v3.2" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>"""
+
 
 def esc(value):
     return escape(str(value), quote=True)
@@ -412,7 +414,7 @@ def layout(lang, key, title, description, body, home=False, verify=False, noinde
   <meta name="twitter:image" content="{SITE}{OG}">
   <meta name="theme-color" content="#823c2e">
   <link rel="icon" href="{LOGO}" type="image/png">{verify_meta}
-  <link rel="stylesheet" href="/css/styles.css?v=20261116m">
+  <link rel="stylesheet" href="/css/styles.css?v=20261117e">
 </head>
 <body class="{klass}">
   <a class="skip" href="#main">{esc(c["skip"])}</a>
@@ -466,10 +468,15 @@ def home(lang):
         hero_alt = "Боядисан интериор с високи сиви рамки на прозорци и светъл дървен под"
         hero_areas = "София · Ловеч · Плевен и областите"
         areas_kicker = "РАЙОНИ НА ОБСЛУЖВАНЕ"
-        areas_title = "Работим близо до Вас"
-        areas_lead = "Предлагаме професионални ремонтни и довършителни дейности в София, Ловеч, Плевен и околните населени места."
-        areas_places = ["София", "Ловеч", "Плевен"]
-        areas_note = "Обслужваме и населени места в съответните области по предварителна уговорка."
+        areas_title = "Работим близо до Вас."
+        areas_lead = "Предлагаме професионални ремонти и довършителни дейности в София, Ловеч, Плевен и околните населени места."
+        areas_cta = "Поискайте оферта →"
+        areas_places = [
+            ("София", "и Софийска област"),
+            ("Ловеч", "и област Ловеч"),
+            ("Плевен", "и област Плевен"),
+        ]
+        areas_note = "Обслужваме и населени места по предварителна уговорка."
         why = "Защо ние?"
         cards = [
             ("1", "Точност:<br>Планираме алгоритмично, изпълняваме в срок", [
@@ -530,10 +537,15 @@ def home(lang):
         hero_alt = "Painted interior with tall grey window frames and a light wood floor"
         hero_areas = "Sofia · Lovech · Pleven and surrounding regions"
         areas_kicker = "SERVICE AREAS"
-        areas_title = "Working Near You"
-        areas_lead = "We provide professional renovation and finishing services in Sofia, Lovech, Pleven, and surrounding communities."
-        areas_places = ["Sofia", "Lovech", "Pleven"]
-        areas_note = "We also serve surrounding towns and villages by prior arrangement."
+        areas_title = "Working Near You."
+        areas_lead = "We offer professional repairs and finishing work in Sofia, Lovech, Pleven, and the surrounding settlements."
+        areas_cta = "Request a quote →"
+        areas_places = [
+            ("Sofia", "and Sofia Province"),
+            ("Lovech", "and Lovech Province"),
+            ("Pleven", "and Pleven Province"),
+        ]
+        areas_note = "We also serve other settlements by prior arrangement."
         why = "Why us?"
         cards = [
             ("1", "Accuracy:<br>We plan the work in stages and deliver on time", [
@@ -619,9 +631,14 @@ def home(lang):
         for i, label in enumerate(dots)
     )
     area_html = "\n".join(
-        f"        <li>{PIN_ICON}<span>{esc(name)}</span></li>"
-        for name in areas_places
+        "        <li>"
+        f"{PIN_ICON}<span class=\"area-city\">{esc(city)}</span>"
+        f"<span class=\"area-region\">{esc(region)}</span></li>"
+        for city, region in areas_places
     )
+    map_svg = (ROOT / "assets" / "bulgaria-map.svg").read_text(encoding="utf-8")
+    map_svg = map_svg.split("<svg ", 1)[1]
+    map_svg = "<svg aria-hidden=\"true\" focusable=\"false\" " + map_svg
     schema = {
         "@context": "https://schema.org",
         "@type": "HomeAndConstructionBusiness",
@@ -692,13 +709,24 @@ def home(lang):
       </div>
     </section>
     <section class="areas" id="areas" aria-labelledby="areas-title">
-      <p class="areas-kicker">{esc(areas_kicker)}</p>
-      <h2 id="areas-title">{esc(areas_title)}</h2>
-      <p class="areas-lead">{esc(areas_lead)}</p>
-      <ul class="area-list">
+      <div class="areas-map" aria-hidden="true">
+        __BULGARIA_MAP__
+      </div>
+      <div class="areas-layout">
+        <div class="areas-copy">
+          <p class="areas-kicker">{esc(areas_kicker)}</p>
+          <h2 id="areas-title">{esc(areas_title)}</h2>
+          <p class="areas-lead">{esc(areas_lead)}</p>
+          <a class="btn areas-cta" href="#contact">{esc(areas_cta)}</a>
+        </div>
+        <div class="areas-split" aria-hidden="true"></div>
+        <div class="areas-places">
+          <ul class="area-list">
 {area_html}
-      </ul>
-      <p class="areas-note">{esc(areas_note)}</p>
+          </ul>
+          <p class="areas-note">{CAL_ICON}<span>{esc(areas_note)}</span></p>
+        </div>
+      </div>
     </section>
     <section class="reviews" aria-labelledby="reviews-title">
       <h2 id="reviews-title">{esc(reviews_title)}</h2>
@@ -717,7 +745,7 @@ def home(lang):
 {schema_html}
     </script>
 """
-    emit(lang, "home", title, desc, body, home=True, verify=(lang == "bg"))
+    emit(lang, "home", title, desc, body.replace("__BULGARIA_MAP__", map_svg), home=True, verify=(lang == "bg"))
 
 
 def portfolio(lang):
